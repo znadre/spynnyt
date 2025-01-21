@@ -1,5 +1,7 @@
 // Runge-Kutta 4th Order Method
-void omegaRungeKuttaStep() {
+float dt;
+
+void omegaRungeKuttaStep() { // One integration step, changing the omega values
   dt = 1.0/frameRate;
   double[] k1 = omegaComputeDerivatives(omega.x, omega.y, omega.z);
 
@@ -26,7 +28,7 @@ void omegaRungeKuttaStep() {
   omega.z += (dt / 6.0) * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2]);
 }
 
-void eRungeKuttaStep() {
+void eRungeKuttaStep() { // One integration step, changing e1, e2, and e3
   dt = 1.0/frameRate;
   Omega = e1.copy().mult(omega.x).add(e2.copy().mult(omega.y).add(e3.copy().mult(omega.z)));
 

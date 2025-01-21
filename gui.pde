@@ -38,24 +38,31 @@ public void obj_droplist_click(GDropList source, GEvent event) { //_CODE_:obj_dr
     selectedObject = objects.get(selected);
   }
   showSelectedObjectValues();
+  saveData();
 } //_CODE_:obj_droplist:570362:
 
 public void Omega0x_textfield_change(GTextField source, GEvent event) { //_CODE_:Omega0x_textfield:814141:
+  saveData();
 } //_CODE_:Omega0x_textfield:814141:
 
 public void Omega0y_textfield_change(GTextField source, GEvent event) { //_CODE_:Omega0y_textfield:325439:
+  saveData();
 } //_CODE_:Omega0y_textfield:325439:
 
 public void Omega0z_textfield_change(GTextField source, GEvent event) { //_CODE_:Omega0z_textfield:808334:
+  saveData();
 } //_CODE_:Omega0z_textfield:808334:
 
 public void MOIx_textfield_change(GTextField source, GEvent event) { //_CODE_:MOIx_textfield:712048:
+  saveData();
 } //_CODE_:MOIx_textfield:712048:
 
 public void MOIy_textfield_change(GTextField source, GEvent event) { //_CODE_:MOIy_textfield:433741:
+  saveData();
 } //_CODE_:MOIy_textfield:433741:
 
 public void MOIz_textfield_change(GTextField source, GEvent event) { //_CODE_:MOIz_textfield:421961:
+  saveData();
 } //_CODE_:MOIz_textfield:421961:
 
 public void setValues_click(GButton source, GEvent event) { //_CODE_:setValues:203165:
@@ -65,6 +72,7 @@ public void setValues_click(GButton source, GEvent event) { //_CODE_:setValues:2
 
 public void resetValues_click(GButton source, GEvent event) { //_CODE_:resetValues:758025:
   resetValues();
+  saveData();
 } //_CODE_:resetValues:758025:
 
 
@@ -95,7 +103,7 @@ public void createGUI(){
   speed_slider.setOpaque(false);
   speed_slider.addEventHandler(this, "speed_slider_change");
   obj_droplist = new GDropList(controlWindow, 210, 20, 130, 100, 3, 10);
-  obj_droplist.setItems(loadStrings("list_570362"), 0);
+  obj_droplist.setItems(loadStrings("object_list.txt"), 0);
   obj_droplist.addEventHandler(this, "obj_droplist_click");
   Omega0x_textfield = new GTextField(controlWindow, 60, 20, 120, 30, G4P.SCROLLBARS_NONE);
   Omega0x_textfield.setOpaque(true);

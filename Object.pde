@@ -11,23 +11,6 @@ public class Object {
   PVector e3 = new PVector(0, 0, 1);
 
   Object(String n, int l, PVector w, PVector m) {
-<<<<<<< Updated upstream
-    this.name = n;
-    this.label = l;
-    this.Omega0 = w;
-    this.MOI = m;
-  }
-
-  void drawObject(PApplet app) {
-    if (label == 1) {
-      float a = 60;
-      app.noStroke();
-      app.fill(255);
-      app.rectMode(CENTER);
-      app.rect(0, -a/6, a*2, 15);
-      app.rect(0, a/3, 15, a);
-    } else if (label == 2) {
-=======
     name = n;
     label = l;
     Omega0 = userOmega0 = w;
@@ -44,7 +27,6 @@ public class Object {
       window.rect(0, -a/6, a*2, 15);
       window.rect(0, a/3, 15, a);
     } else if (label == 1) {
->>>>>>> Stashed changes
       float l = 160.8;
       float w = 78.1;
       float h = 7.4;
