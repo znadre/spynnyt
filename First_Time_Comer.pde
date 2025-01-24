@@ -2,10 +2,19 @@
 boolean FTC = false;
 int stageFTC = 0;
 
-void drawFTC() {
+void FTC() { // Check for a first time comer
+  String[] userControlData = loadStrings("data/control_data.txt");
+  
+  if (userControlData.length == 0) { // A first time comer has an empty data file
+    FTC = true;
+  }
+}
+
+void drawFTC() { // Tutorial for a first time comer
   controlWindow.noFill();
   controlWindow.strokeWeight(3);
   controlWindow.rectMode(CORNERS);
+  
   if (stageFTC == 0) {
     controlWindow.rect(10, 10, 195, 122);
     controlWindow.textAlign(LEFT, TOP);

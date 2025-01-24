@@ -1,8 +1,4 @@
-class ZWindow extends PApplet {
-  //float eyeDist = 750;
-  //PVector eyePos = new PVector(eyeDist/sqrt(2), eyeDist/sqrt(2), 0);
-  //PVector upwardsAxis = new PVector(0, 0, 1);
-  
+class ZWindow extends PApplet { // The object's frame window
   void settings() {
     size(600, 600, P3D);
   }
@@ -10,7 +6,7 @@ class ZWindow extends PApplet {
     zcam = new PeasyCam(this, 0, 0, 0, 750); // Create a new PeasyCam instance with a distance of 500 units
     zcam.setMinimumDistance(100); // Set minimum zoom distance
     zcam.setMaximumDistance(1000); // Set maximum zoom distance
-    zcam.setSuppressRollRotationMode();
+    zcam.setSuppressRollRotationMode(); // Set the desired rotation mode
     surface.setTitle("Object Frame");
   }
   void draw() {
@@ -21,6 +17,7 @@ class ZWindow extends PApplet {
     rotateX(PI/2+0.5); // Rotations to align the starting camera posiion with the X axis
     rotateZ(-PI/2);
     
+    // Draw the object
     object.drawObject(this);
     
     PMatrix3D matrix = new PMatrix3D(
@@ -31,6 +28,7 @@ class ZWindow extends PApplet {
     matrix.invert();
     applyMatrix(matrix);
     
+    // Add coord system to object frame
     drawCoordSystem(this);
     zdrawHUD();
     popMatrix();

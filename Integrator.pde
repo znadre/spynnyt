@@ -1,4 +1,5 @@
 // Runge-Kutta 4th Order Method
+
 float dt;
 
 void omegaRungeKuttaStep() { // One integration step, changing the omega values
@@ -61,7 +62,7 @@ void eRungeKuttaStep() { // One integration step, changing e1, e2, and e3
   e3.normalize();
 }
 
-// Function to compute derivatives based on Euler equations
+// Function to compute derivatives based on Euler equations (of a rotating object)
 
 double[] omegaComputeDerivatives(double omega_x, double omega_y, double omega_z) {
   double d_omega_x = ((MOI.y - MOI.z) / MOI.x) * omega_y * omega_z;

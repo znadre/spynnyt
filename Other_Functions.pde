@@ -1,17 +1,20 @@
 float axisLength = 250;
 
+// HUD functions
 void drawCoordSystem(PApplet window) {
   window.stroke(255);
+  // x, y, z axes
   window.line(0,0,0, axisLength,0,0);
   window.line(0,0,0, 0,axisLength,0);
   window.line(0,0,0, 0,0,axisLength);
   
   window.noFill();
   window.stroke(200);
+  // A cube
   window.box(2*axisLength);
 }
 
-void drawHUD() {
+void drawHUD() { // Draws x, y, z axis labels and the frame rate on the obsever's frame window
   PVector xAxisLabel = new PVector(screenX(axisLength+10, 0, 0), screenY(axisLength+10, 0, 0));
   PVector yAxisLabel = new PVector(screenX(0, axisLength+10, 0), screenY(0, axisLength+10, 0));
   PVector zAxisLabel = new PVector(screenX(0, 0, axisLength+10), screenY(0, 0, axisLength+10));
@@ -30,7 +33,7 @@ void drawHUD() {
   cam.endHUD();
 }
 
-void zdrawHUD() {
+void zdrawHUD() { // Draws x, y, z axis labels on the object's frame window
   PVector xAxisLabel = new PVector(zWindow.screenX(axisLength+10, 0, 0), zWindow.screenY(axisLength+10, 0, 0));
   PVector yAxisLabel = new PVector(zWindow.screenX(0, axisLength+10, 0), zWindow.screenY(0, axisLength+10, 0));
   PVector zAxisLabel = new PVector(zWindow.screenX(0, 0, axisLength+10), zWindow.screenY(0, 0, axisLength+10));
@@ -45,6 +48,11 @@ void zdrawHUD() {
   zcam.endHUD();
 }
 
+
+
+
+
+// Set/reset values
 void setValues() { // After the user inputs the desired values, this runs the corresponding simulation
   if (validValues()) {
     object = selectedObject;
@@ -64,8 +72,9 @@ void setValues() { // After the user inputs the desired values, this runs the co
     e1 = object.e1.copy();
     e2 = object.e2.copy();
     e3 = object.e3.copy();
-  } else {
-    println("dummy");
+  } else { // Invalid value(s)
+    drawInvalid = true;
+    frameCountWhenTheUserClickedOnTheRunButtonAndTheValuesAreInvalid = controlWindow.frameCount;
   }
 }
 
@@ -83,18 +92,4 @@ void showSelectedObjectValues() { // Update the textfields with the selected obj
   MOIx_textfield.setText(str(selectedObject.userMOI.x));
   MOIy_textfield.setText(str(selectedObject.userMOI.y));
   MOIz_textfield.setText(str(selectedObject.userMOI.z));
-}
-
-boolean validValues() { // Inputted values have to be floats
-  boolean check1 = abs(float(Omega0x_textfield.getText())) <= 100;
-  boolean check2 = abs(float(Omega0y_textfield.getText())) <= 100;
-  boolean check3 = abs(float(Omega0z_textfield.getText())) <= 100;
-  boolean check4 = float(MOIx_textfield.getText()) >= 1 && float(MOIx_textfield.getText()) <= 100;
-  boolean check5 = float(MOIy_textfield.getText()) >= 1 && float(MOIy_textfield.getText()) <= 100;
-  boolean check6 = float(MOIz_textfield.getText()) >= 1 && float(MOIz_textfield.getText()) <= 100;
-  
-  if (check1 && check2 && check3 && check4 && check5 && check6) {
-    return true;
-  }
-  return false;
 }

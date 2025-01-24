@@ -1,20 +1,21 @@
-import g4p_controls.*;
-import peasy.*;
+import g4p_controls.*; // Helps with graphical user interface
+import peasy.*; // Allows camera control
 
 PVector Omega; // In radians/sec; in the observer's frame
 PVector omega; // In radians/sec; in the object's frame
-PVector MOI;
-PVector e1;
-PVector e2;
-PVector e3;
+PVector MOI; // Moment of inertia
+PVector e1; // Unit vector along the x-axis of the object
+PVector e2; // Unit vector along the y-axis of the object
+PVector e3; // Unit vector along the z-axis of the object
 
 ArrayList<Object> objects = new ArrayList<Object>();
 
 PShape tennis_racket;
-ZWindow zWindow = new ZWindow();
 
-boolean paused = false;
-float speed = 1;
+ZWindow zWindow = new ZWindow(); // This will be the window showing the object frame
+
+boolean paused = false; // Pause/resume the simulation
+float speed = 1; // Speed/slow down the simulation
 
 PeasyCam cam;
 PeasyCam zcam;
@@ -37,15 +38,17 @@ void setup() {
   cam.setMaximumDistance(1000); // Set maximum zoom distance
   cam.setSuppressRollRotationMode(); // Set the desired rotation mode
 
+  // Initializing zWindow
   String spath = "--sketch-path=" + zWindow.sketchPath();
   String loc = "--location=" + str(10) + "," + str(300);
   String className = zWindow.getClass().getName();
   String[] args = { spath, loc, className };
 
   PApplet.runSketch(args, zWindow);
-
-  FTC();
-  createGUI();
+  
+  FTC(); // Check for a first time comer
+  
+  createGUI(); // Build G4P
   changeFont();
   
   loadData();
@@ -55,22 +58,25 @@ void setup() {
 
 void draw() {
   if (1==frameCount) {
-    surface.setLocation(610, 0);
+    surface.setLocation(610, 0); // Move the main window to desired position
   }
-  if (!paused) {
+  if (!paused) { // Move the simulation forward by one step
     omegaRungeKuttaStep();
     eRungeKuttaStep();
   }
   background(0);
-
+  
   pushMatrix();
-  scale(1, 1, -1);
+  // Align camera with x-axis
+  scale(1, 1, -1); // Flip the Z axis to make the cordinate system right-handed
   rotateX(PI/2);
   rotateZ(-PI/2);
-
+  
+  // Add coord system to observer frame
   drawCoordSystem(this);
   drawHUD();
-
+  
+  // Draw the object
   PMatrix3D matrix = new PMatrix3D(
     e1.x, e2.x, e3.x, 0.0,
     e1.y, e2.y, e3.y, 0.0,
@@ -78,50 +84,6 @@ void draw() {
     0.0, 0.0, 0.0, 1.0);
   applyMatrix(matrix);
   object.drawObject(this);
-  popMatrix();
-}
-
-void FTC() {
-  String[] userControlData = loadStrings("data/control_data.txt");
   
-  if (userControlData.length == 0) {
-    FTC = true;
-  }
-}
-
-void loadData() {
-  String[] userControlData = loadStrings("data/control_data.txt");
-
-  // Not first time comer
-  if (!FTC) {
-    String[] objectsUsed = userControlData[0].split("\t"); // Determines variables: object, selectedObject
-    object = objects.get(int(objectsUsed[0]));
-    selectedObject = objects.get(int(objectsUsed[1]));
-
-    for (int i = 1; i < userControlData.length; i++ ) {
-      String[] objectData = userControlData[i].split("\t");
-      objects.get(i-1).userOmega0 = new PVector(float(objectData[0]), float(objectData[1]), float(objectData[2]));
-      objects.get(i-1).userMOI = new PVector(float(objectData[3]), float(objectData[4]), float(objectData[5]));
-    }
-
-    obj_droplist.setSelected(objects.indexOf(selectedObject));
-  }
-}
-
-void saveData() {
-  String[] userControlData = new String[objects.size()+1];
-  userControlData[0] = str(objects.indexOf(object)) + "\t" + str(objects.indexOf(selectedObject));
-
-  for (int i = 1; i < userControlData.length; i++) {
-    Object savedObject = objects.get(i-1);
-    userControlData[i] =
-      str(savedObject.userOmega0.x) + "\t" +
-      str(savedObject.userOmega0.y) + "\t" +
-      str(savedObject.userOmega0.z) + "\t" +
-      str(savedObject.userMOI.x) + "\t" +
-      str(savedObject.userMOI.y) + "\t" +
-      str(savedObject.userMOI.z);
-  }
-
-  saveStrings("data/control_data.txt", userControlData);
+  popMatrix();
 }
