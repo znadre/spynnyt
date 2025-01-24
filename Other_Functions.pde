@@ -23,6 +23,10 @@ void drawHUD() {
   text("x", xAxisLabel.x, xAxisLabel.y);
   text("y", yAxisLabel.x, yAxisLabel.y);
   text("z", zAxisLabel.x, zAxisLabel.y);
+  
+  textAlign(LEFT, TOP);
+  textSize(25);
+  text("Frame Rate: " + str(int(frameRate)), 20, 15);
   cam.endHUD();
 }
 
@@ -65,7 +69,6 @@ void setValues() { // After the user inputs the desired values, this runs the co
   }
 }
 
-
 void resetValues() { // Reset the user values into the default values
   selectedObject.userOmega0 = selectedObject.Omega0.copy();
   selectedObject.userMOI = selectedObject.MOI.copy();
@@ -83,13 +86,14 @@ void showSelectedObjectValues() { // Update the textfields with the selected obj
 }
 
 boolean validValues() { // Inputted values have to be floats
-  boolean check1 = !(float(Omega0x_textfield.getText()) != float(Omega0x_textfield.getText()));
-  boolean check2 = !(float(Omega0y_textfield.getText()) != float(Omega0y_textfield.getText()));
-  boolean check3 = !(float(Omega0z_textfield.getText()) != float(Omega0z_textfield.getText()));
-  boolean check4 = !(float(MOIx_textfield.getText()) != float(MOIx_textfield.getText()));
-  boolean check5 = !(float(MOIy_textfield.getText()) != float(MOIy_textfield.getText()));
-  boolean check6 = !(float(MOIz_textfield.getText()) != float(MOIz_textfield.getText()));
-  if (check1 && check2 &&  check3 &&  check4 &&  check5 &&  check6) {
+  boolean check1 = abs(float(Omega0x_textfield.getText())) <= 100;
+  boolean check2 = abs(float(Omega0y_textfield.getText())) <= 100;
+  boolean check3 = abs(float(Omega0z_textfield.getText())) <= 100;
+  boolean check4 = float(MOIx_textfield.getText()) >= 1 && float(MOIx_textfield.getText()) <= 100;
+  boolean check5 = float(MOIy_textfield.getText()) >= 1 && float(MOIy_textfield.getText()) <= 100;
+  boolean check6 = float(MOIz_textfield.getText()) >= 1 && float(MOIz_textfield.getText()) <= 100;
+  
+  if (check1 && check2 && check3 && check4 && check5 && check6) {
     return true;
   }
   return false;

@@ -18,7 +18,7 @@ class ZWindow extends PApplet {
 
     pushMatrix();
     scale(1, 1, -1); // Flip the Z axis to make the cordinate system right-handed
-    rotateX(PI/2); // Rotations to align the starting camera posiion with the X axis
+    rotateX(PI/2+0.5); // Rotations to align the starting camera posiion with the X axis
     rotateZ(-PI/2);
     
     object.drawObject(this);

@@ -16,6 +16,9 @@
 
 synchronized public void controlWindow_draw(PApplet appc, GWinData data) { //_CODE_:controlWindow:291229:
   appc.background(230);
+  if (FTC) {
+    drawFTC();
+  }
 } //_CODE_:controlWindow:291229:
 
 public void pause_resume_click(GButton source, GEvent event) { //_CODE_:pause_resume:592749:
@@ -75,6 +78,26 @@ public void resetValues_click(GButton source, GEvent event) { //_CODE_:resetValu
   saveData();
 } //_CODE_:resetValues:758025:
 
+public void nextFTC_click(GButton source, GEvent event) { //_CODE_:resetValues:758025:
+  stageFTC++;
+  if (stageFTC == 1) {
+    source.moveTo(300,50);
+  } else if (stageFTC == 2) {
+    source.moveTo(430,100);
+  } else if (stageFTC == 3) {
+    source.moveTo(530,15);
+  } else if (stageFTC == 4) {
+    source.moveTo(230,100);
+  } else if (stageFTC == 5) {
+    source.moveTo(430,100);
+  } else if (stageFTC == 6) {
+    source.moveTo(430,100);
+    source.setText("End");
+  } else {
+    source.setVisible(false);
+  }
+} //_CODE_:resetValues:758025:
+
 
 
 // Create all the GUI controls. 
@@ -91,7 +114,6 @@ public void createGUI(){
   pause_resume = new GButton(controlWindow, 370, 130, 80, 40);
   pause_resume.setTextAlign(GAlign.CENTER, GAlign.BOTTOM);
   pause_resume.setText("Pause");
-  pause_resume.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
   pause_resume.addEventHandler(this, "pause_resume_click");
   speed_slider = new GSlider(controlWindow, 40, 110, 300, 80, 10.0);
   speed_slider.setShowValue(true);
@@ -105,56 +127,72 @@ public void createGUI(){
   obj_droplist = new GDropList(controlWindow, 210, 20, 130, 100, 3, 10);
   obj_droplist.setItems(loadStrings("object_list.txt"), 0);
   obj_droplist.addEventHandler(this, "obj_droplist_click");
-  Omega0x_textfield = new GTextField(controlWindow, 60, 20, 120, 30, G4P.SCROLLBARS_NONE);
+  Omega0x_textfield = new GTextField(controlWindow, 60, 20, 120, 20, G4P.SCROLLBARS_NONE);
   Omega0x_textfield.setOpaque(true);
   Omega0x_textfield.addEventHandler(this, "Omega0x_textfield_change");
-  Omega0y_textfield = new GTextField(controlWindow, 60, 50, 120, 30, G4P.SCROLLBARS_NONE);
+  Omega0y_textfield = new GTextField(controlWindow, 60, 50, 120, 20, G4P.SCROLLBARS_NONE);
   Omega0y_textfield.setOpaque(true);
   Omega0y_textfield.addEventHandler(this, "Omega0y_textfield_change");
-  Omega0z_textfield = new GTextField(controlWindow, 60, 80, 120, 30, G4P.SCROLLBARS_NONE);
+  Omega0z_textfield = new GTextField(controlWindow, 60, 80, 120, 20, G4P.SCROLLBARS_NONE);
   Omega0z_textfield.setOpaque(true);
   Omega0z_textfield.addEventHandler(this, "Omega0z_textfield_change");
-  MOIx_textfield = new GTextField(controlWindow, 390, 20, 120, 30, G4P.SCROLLBARS_NONE);
+  MOIx_textfield = new GTextField(controlWindow, 390, 20, 120, 20, G4P.SCROLLBARS_NONE);
   MOIx_textfield.setOpaque(true);
   MOIx_textfield.addEventHandler(this, "MOIx_textfield_change");
-  MOIy_textfield = new GTextField(controlWindow, 390, 50, 120, 30, G4P.SCROLLBARS_NONE);
+  MOIy_textfield = new GTextField(controlWindow, 390, 50, 120, 20, G4P.SCROLLBARS_NONE);
   MOIy_textfield.setOpaque(true);
   MOIy_textfield.addEventHandler(this, "MOIy_textfield_change");
-  MOIz_textfield = new GTextField(controlWindow, 390, 80, 120, 30, G4P.SCROLLBARS_NONE);
+  MOIz_textfield = new GTextField(controlWindow, 390, 80, 120, 20, G4P.SCROLLBARS_NONE);
   MOIz_textfield.setOpaque(true);
   MOIz_textfield.addEventHandler(this, "MOIz_textfield_change");
-  Omega0x_label = new GLabel(controlWindow, 20, 25, 40, 30);
+  Omega0x_label = new GLabel(controlWindow, 23, 20, 40, 30);
   Omega0x_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Omega0x_label.setText("Ωx");
   Omega0x_label.setOpaque(false);
-  Omega0y_label = new GLabel(controlWindow, 20, 55, 40, 30);
+  Omega0y_label = new GLabel(controlWindow, 23, 50, 40, 30);
   Omega0y_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Omega0y_label.setText("Ωy");
   Omega0y_label.setOpaque(false);
-  Omega0z_label = new GLabel(controlWindow, 20, 85, 40, 30);
+  Omega0z_label = new GLabel(controlWindow, 23, 80, 40, 30);
   Omega0z_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Omega0z_label.setText("Ωz");
   Omega0z_label.setOpaque(false);
-  Ix_label = new GLabel(controlWindow, 350, 25, 40, 30);
+  OmegaRange_label = new GLabel(controlWindow, 3, 100, 80, 30);
+  OmegaRange_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  OmegaRange_label.setText("-10 ~ 10");
+  OmegaRange_label.setOpaque(false);
+  Ix_label = new GLabel(controlWindow, 355, 20, 40, 30);
   Ix_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Ix_label.setText("Ix");
   Ix_label.setOpaque(false);
-  Iy_label = new GLabel(controlWindow, 350, 55, 40, 30);
+  Iy_label = new GLabel(controlWindow, 355, 50, 40, 30);
   Iy_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Iy_label.setText("Iy");
   Iy_label.setOpaque(false);
-  Iz_label = new GLabel(controlWindow, 350, 85, 40, 30);
+  Iz_label = new GLabel(controlWindow, 355, 80, 40, 30);
   Iz_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Iz_label.setText("Iz");
   Iz_label.setOpaque(false);
+  IRange_label = new GLabel(controlWindow, 335, 100, 80, 30);
+  IRange_label.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  IRange_label.setText("1 ~ 100");
+  IRange_label.setOpaque(false);
   setValues = new GButton(controlWindow, 525, 50, 60, 40);
   setValues.setTextAlign(GAlign.CENTER, GAlign.BOTTOM);
   setValues.setText("Run");
   setValues.addEventHandler(this, "setValues_click");
-  resetValues = new GButton(controlWindow, 480, 130, 60, 40);
+  resetValues = new GButton(controlWindow, 480, 115, 80, 70);
   resetValues.setTextAlign(GAlign.CENTER, GAlign.BOTTOM);
-  resetValues.setText("Reset");
+  resetValues.setText("Reset Values");
   resetValues.addEventHandler(this, "resetValues_click");
+  nextFTC = new GButton(controlWindow, 150, 100, 50, 30);
+  nextFTC.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  nextFTC.setText("Next");
+  nextFTC.addEventHandler(this, "nextFTC_click");
+  nextFTC.setLocalColorScheme(GCScheme.CYAN_SCHEME);
+  if (!FTC) {
+    nextFTC.setVisible(false);
+  }
   controlWindow.loop();
 }
 
@@ -172,9 +210,12 @@ GTextField MOIy_textfield;
 GTextField MOIz_textfield; 
 GLabel Omega0x_label; 
 GLabel Omega0y_label; 
-GLabel Omega0z_label; 
+GLabel Omega0z_label;
+GLabel OmegaRange_label;
 GLabel Ix_label; 
 GLabel Iy_label; 
 GLabel Iz_label; 
+GLabel IRange_label;
 GButton setValues; 
 GButton resetValues; 
+GButton nextFTC; 
